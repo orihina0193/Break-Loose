@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>獅子奮迅 早見表</title>
+<style>
+  :root{
+    --bg:#15180f; --card:#1f2417; --line:#343b27; --text:#e8ecd8; --sub:#9aa585;
+    --accent:#9ccc3c; --warn:#e0a63a;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Hiragino Sans","Noto Sans JP",sans-serif;
+    line-height:1.5;padding:0 0 40px}
+  header{padding:16px 16px 8px}
+  h1{margin:0;font-size:20px;letter-spacing:.05em}
+  .lead{margin:6px 0 0;font-size:13px;color:var(--sub)}
+  .now{margin:10px 16px 0;padding:8px 12px;border:1px solid var(--accent);
+    border-radius:10px;font-size:14px;background:rgba(156,204,60,.08)}
+  .now b{color:var(--accent)}
+  .tabs{display:flex;gap:6px;padding:12px 16px 0;position:sticky;top:0;background:var(--bg);z-index:5}
+  .tab{flex:1;padding:10px 4px;border:1px solid var(--line);background:var(--card);
+    color:var(--text);border-radius:10px;font-size:15px;font-weight:600;cursor:pointer;position:relative}
+  .tab small{display:block;font-size:11px;font-weight:400;color:var(--sub)}
+  .tab.active{border-color:var(--accent);background:#2a331a}
+  .tab.current::after{content:"いま";position:absolute;top:-8px;right:6px;
+    background:var(--accent);color:#15180f;font-size:10px;font-weight:700;
+    padding:1px 6px;border-radius:8px}
+  main{padding:12px 16px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:12px;
+    margin-bottom:10px;padding:12px 14px;cursor:pointer}
+  .card .top{display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+  .name{font-size:16px;font-weight:700}
+  .pt{font-size:14px;color:var(--accent);white-space:nowrap;font-weight:600}
+  .badge{display:inline-block;margin-top:4px;font-size:12px;color:#15180f;
+    background:var(--warn);padding:1px 8px;border-radius:8px;font-weight:700}
+  .guide{margin-top:6px;font-size:13.5px;color:var(--text)}
+  .detail{display:none;margin-top:8px;padding-top:8px;border-top:1px dashed var(--line);
+    font-size:13px;color:var(--sub)}
+  .detail div{margin:2px 0}
+  .card.open .detail{display:block}
+  .hint{font-size:11.5px;color:var(--sub);margin-top:6px}
+  h2{font-size:15px;margin:22px 16px 8px;color:var(--accent)}
+  table{width:calc(100% - 32px);margin:0 16px;border-collapse:collapse;font-size:12.5px}
+  th,td{border:1px solid var(--line);padding:5px 6px;text-align:right}
+  th{background:var(--card);color:var(--sub);font-weight:600}
+  td:first-child,th:first-child{text-align:left}
+  .rew{margin:8px 16px 0;font-size:12.5px;color:var(--sub)}
+  footer{margin:24px 16px 0;font-size:11.5px;color:var(--sub)}
+  footer a{color:var(--accent)}
+</style>
+</head>
+<body>
+<header>
+  <h1>獅子奮迅 早見表</h1>
+  <p class="lead">毎週 木〜土／8時間ごとにテーマが切り替わる（日本時間）</p>
+</header>
+<div class="now" id="now"></div>
+<div class="tabs" id="tabs"></div>
+<main id="list"></main>
+
+<h2>必要ポイントと報酬（最終段）</h2>
+<table>
+  <tr><th>最終段</th><th>1段</th><th>2段</th><th>3段</th><th>4段</th></tr>
+  <tr><td>93万</td><td>56,250</td><td>150,000</td><td>375,000</td><td>656,250</td></tr>
+  <tr><td>80万</td><td>48,000</td><td>128,000</td><td>320,000</td><td>560,000</td></tr>
+  <tr><td>62万</td><td>37,500</td><td>100,000</td><td>250,000</td><td>437,500</td></tr>
+  <tr><td>11万</td><td>9,000</td><td>18,000</td><td>33,000</td><td>45,000</td></tr>
+</table>
+<p class="rew">※ 93万=937,500／80万=800,000／62万=625,000／11万=112,500。最終段で リアの破片×2・1,200ダイヤ などがもらえます。次のテーマに切り替わると受け取れなくなるので、達成したらすぐ受け取り！</p>
+<script>
+const SLOTS = [
+  { key:"day", label:"9:00〜", sub:"〜16:55", themes:[
+    { name:"装備＆モジュール", pt:937500,
+      guide:"選択型強化補給・選択型プロモート補給 92箱／選択型改造補給 31箱",
+      detail:["★1〜★5強化材料：100／500／2,000／5,000／20,000pt","プロモーターⅠ〜Ⅲ：1,000／5,000／40,000pt","改造機 3,000pt／装備ロック装置 30,000pt／異能設計図 10,000,000pt"]},
+    { name:"チップ＆キューブ", pt:937500,
+      guide:"選択型強化補給・選択型プロモート補給 92箱／選択型改造補給 31箱",
+      detail:["★1〜★5強化材料：100／500／2,000／5,000／20,000pt","プロモーターⅠ〜Ⅲ：1,000／5,000／40,000pt","改造機 3,000pt／異能設計図 10,000,000pt","※部隊チップ関係はポイントにならない"]},
+    { name:"英雄強化", pt:937500,
+      guide:"★5英雄チョイス 47個",
+      detail:["英雄の破片：★2=500／★3=2,000／★4=8,000／★5=20,000／★6=30,000pt"]},
+    { name:"ブースト（建築/研究/訓練）", pt:625000,
+      guide:"ブースト合計 約28日22時間分（1分=15pt）",
+      detail:["625,000 ÷ 15 ＝ 約41,667分"]},
+    { name:"ナノウェポン", pt:625000, only:"土曜のみ",
+      guide:"選択型改造補給 21箱",
+      detail:["ウェポンプロモーターⅠ=1,000／Ⅱ=5,000pt","★1〜★5ウェポン強化材料：100／500／2,000／5,000／20,000pt","ナノウェポン改造機 3,000pt／超伝導量子材料 200,000pt","ウェポン作成：N=20,000／HN=50,000／R=100,000／HR=200,000／SR=500,000pt"]}
+  ]},
+  { key:"eve", label:"17:00〜", sub:"〜0:55", themes:[
+    { name:"兵士増加＆訓練ブースト", pt:937500,
+      guide:"T11なら約6,250人（ブースト分は別に加算）",
+      detail:["訓練ブースト1分=15pt","兵士訓練：T1=5／T5=30／T10=110／T11=150／T12=200／T13=220／半感染(T14)=300pt","昇格は元の兵士のポイントが引かれる（例：T7→T11は1人95pt）"]},
+    { name:"研究＆研究ブースト", pt:937500,
+      guide:"研究完成の戦力+1あたり2pt／研究ブースト1分あたり15pt",
+      detail:["仕掛け中の研究があるとラク"]},
+    { name:"スタミナ＆AP", pt:625000,
+      guide:"スタミナ 約1,042消費、または AP 約1,563消費",
+      detail:["スタミナ1消費=600pt／AP1消費=400pt","自然回復分も入る（8時間でおよそ104,000pt分）"]},
+    { name:"ナノウェポン", pt:625000, only:"木曜のみ",
+      guide:"選択型改造補給 21箱",
+      detail:["ウェポンプロモーターⅠ=1,000／Ⅱ=5,000pt","★1〜★5ウェポン強化材料：100／500／2,000／5,000／20,000pt","ナノウェポン改造機 3,000pt／超伝導量子材料 200,000pt","ウェポン作成：N=20,000／HN=50,000／R=100,000／HR=200,000／SR=500,000pt"]},
+    { name:"器官強化＆結晶核獲得", pt:800000,
+      guide:"選択型改造補給 27箱（器官改造機=3,000pt）",
+      detail:["器官強化ルーン獲得：N=20,000／HN=100,000／R=400,000／HR=1,000,000／SR=2,000,000pt","ルーンの破片：N=200／HN=1,000／R=4,000／HR=10,000／SR=20,000pt","結晶核：N=10,000／HN=30,000／R=100,000／HR=300,000pt","器官強化薬 100pt／ホログラフィー設計図 100,000pt／結晶の粉 100pt／結晶核の破片 10,000pt"]}
+  ]},
+  { key:"night", label:"1:00〜", sub:"〜8:55", themes:[
+    { name:"ダイヤ消費", pt:112500,
+      guide:"ダイヤ 112,500個消費（1個=1pt）",
+      detail:["土日のダイヤ消費イベントと重なると効率がいい"]},
+    { name:"建築＆建築ブースト", pt:937500,
+      guide:"建築完成の戦力+1あたり2pt／建築ブースト1分あたり15pt",
+      detail:["大きな建築を仕掛けているとラク"]},
+    { name:"建築・研究・兵士訓練", pt:625000,
+      guide:"T10なら約5,682人",
+      detail:["建築・研究の戦力+1あたり2pt","兵士訓練：T1=5／T5=30／T10=110／T11=150／T12=200／T13=220／半感染(T14)=300pt","昇格は元の兵士のポイントが引かれる"]},
+    { name:"ミュータント＆グローリー", pt:625000,
+      guide:"グローリー1獲得=600pt／ミュータント 軍事・内政100pt獲得=各20pt",
+      detail:["グローリーがポイントになるのは通常週の金曜と獅子奮迅だけ"]},
+    { name:"ナノウェポン", pt:625000, only:"金曜25時（土曜1:00）のみ",
+      guide:"選択型改造補給 21箱",
+      detail:["ウェポンプロモーターⅠ=1,000／Ⅱ=5,000pt","★1〜★5ウェポン強化材料：100／500／2,000／5,000／20,000pt","ナノウェポン改造機 3,000pt／超伝導量子材料 200,000pt","ウェポン作成：N=20,000／HN=50,000／R=100,000／HR=200,000／SR=500,000pt"]}
+  ]}
+];
+
+function jstHour(){
+  const h = new Intl.DateTimeFormat("en-US",{timeZone:"Asia/Tokyo",hour:"numeric",hour12:false}).format(new Date());
+  return parseInt(h,10) % 24;
+}
+function currentSlot(){
+  const h = jstHour();
+  if (h >= 9 && h < 17) return 0;
+  if (h >= 17 || h < 1) return 1;
+  return 2;
+}
+const cur = currentSlot();
+let sel = cur;
+
+function fmt(n){ return n.toLocaleString("ja-JP"); }
+
+function render(){
+  document.getElementById("now").innerHTML =
+    "いまは <b>" + SLOTS[cur].label + SLOTS[cur].sub + "</b> の枠です（日本時間）";
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  SLOTS.forEach((s,i)=>{
+    const b = document.createElement("button");
+    b.className = "tab" + (i===sel?" active":"") + (i===cur?" current":"");
+    b.innerHTML = s.label + "<small>" + s.sub + "</small>";
+    b.onclick = ()=>{ sel = i; render(); };
+    tabs.appendChild(b);
+  });
+  const list = document.getElementById("list");
+  list.innerHTML = "";
+  SLOTS[sel].themes.forEach(t=>{
+    const c = document.createElement("div");
+    c.className = "card";
+    c.innerHTML =
+      '<div class="top"><span class="name">' + t.name + '</span>' +
+      '<span class="pt">最終段 ' + fmt(t.pt) + '</span></div>' +
+      (t.only ? '<span class="badge">' + t.only + '</span>' : '') +
+      '<div class="guide">' + t.guide + '</div>' +
+      '<div class="detail">' + t.detail.map(d=>"<div>・"+d+"</div>").join("") + '</div>' +
+      '<div class="hint">タップで詳しい内訳</div>';
+    c.onclick = ()=> c.classList.toggle("open");
+    list.appendChild(c);
+  });
+}
+render();
+</script>
+</body>
+</html>
